@@ -4,7 +4,10 @@ import { ArrowLeft, Save, User, BarChart3, List, FolderKanban, Mail, X, Lock, Lo
 import { usePortfolioData } from '../context/PortfolioDataContext'
 
 const AUTH_KEY = 'portfolio-admin-auth'
-const getCorrectPassword = () => (typeof import.meta.env?.VITE_ADMIN_PASSWORD === 'string' ? import.meta.env.VITE_ADMIN_PASSWORD : 'admin')
+const getCorrectPassword = () => {
+  const v = import.meta.env?.VITE_ADMIN_PASSWORD
+  return typeof v === 'string' && v.trim() ? v.trim() : 'admin'
+}
 
 const LANGS = [
   { key: 'en', label: 'EN' },
@@ -83,7 +86,8 @@ export default function AdminPage() {
   const handleLogin = (e) => {
     e.preventDefault()
     setLoginError('')
-    if (password === getCorrectPassword()) {
+    const trimmed = password.trim()
+    if (trimmed && trimmed === getCorrectPassword()) {
       sessionStorage.setItem(AUTH_KEY, '1')
       setAuthenticated(true)
       setPassword('')
