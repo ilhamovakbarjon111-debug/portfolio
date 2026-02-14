@@ -2,11 +2,17 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Save, User, BarChart3, List, FolderKanban, Mail, X, Lock, LogOut, Phone, MessageCircle, Trash2, Image } from 'lucide-react'
 import { usePortfolioData } from '../context/PortfolioDataContext'
+import { API_BASE } from '../lib/api.js'
 
 const AUTH_KEY = 'portfolio-admin-auth'
+const TOKEN_KEY = 'portfolio-admin-token'
 const getCorrectPassword = () => {
   const v = import.meta.env?.VITE_ADMIN_PASSWORD
   return typeof v === 'string' && v.trim() ? v.trim() : 'admin'
+}
+const getAuthHeaders = () => {
+  const token = sessionStorage.getItem(TOKEN_KEY)
+  return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
 const LANGS = [
@@ -40,7 +46,15 @@ export default function AdminPage() {
   })
   const { overrides, setOverrides } = usePortfolioData()
 
-  const refreshContactMessages = () => {
+  const refreshContactMessages = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/contact-messages`, { headers: getAuthHeaders() })
+      const data = res.ok ? await res.json() : null
+      if (data?.ok && Array.isArray(data.messages)) {
+        setContactMessages(data.messages)
+        return
+      }
+    } catch (_) {}
     try {
       setContactMessages(JSON.parse(localStorage.getItem(CONTACT_MESSAGES_KEY) || '[]'))
     } catch {
@@ -48,7 +62,20 @@ export default function AdminPage() {
     }
   }
 
-  const removeContactMessage = (index) => {
+  const removeContactMessage = async (index) => {
+    const msg = contactMessages[index]
+    if (msg?.id) {
+      try {
+        const res = await fetch(`${API_BASE}/api/contact-messages?id=${encodeURIComponent(msg.id)}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders(),
+        })
+        if (res.ok) {
+          setContactMessages((prev) => prev.filter((_, i) => i !== index))
+          return
+        }
+      } catch (_) {}
+    }
     const next = contactMessages.filter((_, i) => i !== index)
     localStorage.setItem(CONTACT_MESSAGES_KEY, JSON.stringify(next))
     setContactMessages(next)
@@ -83,11 +110,30 @@ export default function AdminPage() {
     if (tab === 'messages') refreshContactMessages()
   }, [tab])
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     setLoginError('')
     const trimmed = password.trim()
-    if (trimmed && trimmed === getCorrectPassword()) {
+    if (!trimmed) {
+      setLoginError('Noto‘g‘ri parol')
+      return
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/admin-login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: trimmed }),
+      })
+      const data = res.ok ? await res.json() : { ok: false }
+      if (data.ok) {
+        sessionStorage.setItem(AUTH_KEY, '1')
+        if (data.token) sessionStorage.setItem(TOKEN_KEY, data.token)
+        setAuthenticated(true)
+        setPassword('')
+        return
+      }
+    } catch (_) {}
+    if (trimmed === getCorrectPassword()) {
       sessionStorage.setItem(AUTH_KEY, '1')
       setAuthenticated(true)
       setPassword('')
@@ -98,6 +144,7 @@ export default function AdminPage() {
 
   const handleLogout = () => {
     sessionStorage.removeItem(AUTH_KEY)
+    sessionStorage.removeItem(TOKEN_KEY)
     setAuthenticated(false)
   }
 
@@ -152,20 +199,28 @@ export default function AdminPage() {
     }))
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const profile = {}
     LANGS.forEach(({ key }) => {
       const p = form.profile[key] || {}
       if (Object.keys(p).length) profile[key] = p
     })
-    setOverrides({
+    const payload = {
       profile: { ...overrides.profile, ...profile },
       stats: form.stats,
       skills: form.skills.map((name) => ({ name })),
       projects: form.projects,
-    })
+    }
+    setOverrides(payload)
     setSaved(true)
     setTimeout(() => setSaved(false), 3000)
+    try {
+      await fetch(`${API_BASE}/api/portfolio-data`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        body: JSON.stringify(payload),
+      })
+    } catch (_) {}
   }
 
   const addProject = () => {
@@ -481,7 +536,7 @@ export default function AdminPage() {
                   <div className="flex justify-between items-start gap-2">
                     <span className="font-medium text-[var(--text)]">{msg.name || '—'}</span>
                     <span className="text-xs text-[var(--text-muted)] whitespace-nowrap">
-                      {msg.date ? new Date(msg.date).toLocaleString() : ''}
+                      {(msg.created_at || msg.date) ? new Date(msg.created_at || msg.date).toLocaleString() : ''}
                     </span>
                     <button
                       type="button"

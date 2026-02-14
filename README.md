@@ -1,39 +1,40 @@
 # Portfolio — Akbarjon Ilhamov
 
-Zamonaviy, chiroyli portfolio sayt. Dark/Light rejim, 3 tilda (EN, UZ, RU), animatsiyalar va loyihalar bo‘limi.
+Backend (PostgreSQL) va frontend (React/Vite) alohida papkalarda.
 
-## Xususiyatlar
+## Loyiha tuzilishi
 
-- **Dizayn**: Gradient matn, glassmorphism navbar, yumshoq animatsiyalar
-- **Tillar**: English, O‘zbek, Русский (sahifa yuqorisidagi EN | UZ | RU tugmalari)
-- **Mavzu**: Dark / Light rejim (tugma navbar da)
-- **Bo‘limlar**: Hero, About, Projects, Contact
-- **Loyihalar**: O‘z loyihalaringizni `src/data/projects.js` da o‘zgartiring
-- **Ko‘nikmalar**: `src/data/skills.js` da ro‘yxatni tahrirlang
+- **backend/** — Node.js (Express) + PostgreSQL. API: admin login, kontakt, portfolio ma’lumotlari.
+- **frontend/** — React, Vite, Tailwind. Portfolio sayt va admin panel.
 
 ## Ishga tushirish
 
+### 1. Backend
+
 ```bash
+cd backend
+cp .env.example .env   # DATABASE_URL va ADMIN_PASSWORD ni to‘ldiring
 npm install
 npm run dev
 ```
 
-Brauzerda: http://localhost:5173
+Backend: http://localhost:3001
 
-## Build
+### 2. Frontend
 
 ```bash
-npm run build
-npm run preview
+cd frontend
+npm install
+npm run dev
 ```
 
-## Loyihalarni qo‘shish
+Frontend: http://localhost:5173 (Vite `/api` ni backend’ga proxy qiladi)
 
-`src/data/projects.js` faylida har bir loyiha uchun:
+### 3. PostgreSQL jadval
 
-- `title` — nomi
-- `description` — qisqacha tavsif
-- `image` — rasmlar URL (yoki `/img/project1.jpg`)
-- `tags` — texnologiyalar ro‘yxati
-- `liveUrl` — sayt havolasi
-- `codeUrl` — GitHub havolasi
+Neon yoki boshqa Postgres’da `backend/schema.sql` ni ishga tushiring.
+
+## Deploy
+
+- **Backend** — Railway, Render, Fly.io va h.k. (Node + env: PORT, ADMIN_PASSWORD, DATABASE_URL)
+- **Frontend** — Vercel. Env: `VITE_API_URL` = backend URL (masalan `https://your-backend.railway.app`)

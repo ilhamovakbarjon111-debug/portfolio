@@ -1,4 +1,5 @@
-import { createContext, useContext, useCallback, useMemo, useState } from 'react'
+import { createContext, useContext, useCallback, useMemo, useState, useEffect } from 'react'
+import { API_BASE } from '../lib/api.js'
 import { translations } from '../translations'
 import { projects as defaultProjects } from '../data/projects'
 import { skills as defaultSkills } from '../data/skills'
@@ -16,17 +17,21 @@ const defaultOverrides = {
   projects: defaultProjects,
 }
 
+function mergeOverrides(parsed) {
+  if (!parsed || typeof parsed !== 'object') return defaultOverrides
+  return {
+    profile: { ...defaultOverrides.profile, ...parsed.profile },
+    stats: { ...defaultOverrides.stats, ...parsed.stats },
+    skills: Array.isArray(parsed.skills) ? parsed.skills : defaultOverrides.skills,
+    projects: Array.isArray(parsed.projects) ? parsed.projects : defaultOverrides.projects,
+  }
+}
+
 function loadOverrides() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return defaultOverrides
-    const parsed = JSON.parse(raw)
-    return {
-      profile: { ...defaultOverrides.profile, ...parsed.profile },
-      stats: { ...defaultOverrides.stats, ...parsed.stats },
-      skills: Array.isArray(parsed.skills) ? parsed.skills : defaultOverrides.skills,
-      projects: Array.isArray(parsed.projects) ? parsed.projects : defaultOverrides.projects,
-    }
+    return mergeOverrides(JSON.parse(raw))
   } catch {
     return defaultOverrides
   }
@@ -59,6 +64,18 @@ export const PortfolioDataContext = createContext(null)
 
 export function PortfolioDataProvider({ children }) {
   const [overrides, setOverridesState] = useState(loadOverrides)
+
+  useEffect(() => {
+    let cancelled = false
+    fetch(`${API_BASE}/api/portfolio-data`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (cancelled || !json?.ok || !json?.data) return
+        setOverridesState(mergeOverrides(json.data))
+      })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [])
 
   const setOverrides = useCallback((next) => {
     setOverridesState((prev) => {

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { User, Phone, MessageCircle, MessageSquare, Send, CheckCircle2 } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
 import { SectionBackground } from './AnimatedBackground'
+import { API_BASE } from '../lib/api.js'
 
 export default function Contact() {
   const { t } = useLanguage()
@@ -10,7 +11,7 @@ export default function Contact() {
 
   const CONTACT_MESSAGES_KEY = 'portfolio-contact-messages'
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const form = e.target
     const payload = {
@@ -18,13 +19,21 @@ export default function Contact() {
       phone: form.phone?.value?.trim() || '',
       telegram: form.telegram?.value?.trim() || '',
       message: form.message?.value?.trim() || '',
-      date: new Date().toISOString(),
     }
     try {
-      const stored = JSON.parse(localStorage.getItem(CONTACT_MESSAGES_KEY) || '[]')
-      stored.unshift(payload)
-      localStorage.setItem(CONTACT_MESSAGES_KEY, JSON.stringify(stored))
-    } catch (_) {}
+      const res = await fetch(`${API_BASE}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) throw new Error()
+    } catch (_) {
+      try {
+        const stored = JSON.parse(localStorage.getItem(CONTACT_MESSAGES_KEY) || '[]')
+        stored.unshift({ ...payload, date: new Date().toISOString() })
+        localStorage.setItem(CONTACT_MESSAGES_KEY, JSON.stringify(stored))
+      } catch (_) {}
+    }
     form.reset()
     setSent(true)
   }
