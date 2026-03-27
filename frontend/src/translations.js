@@ -9,10 +9,11 @@ export const translations = {
     hero: {
       greeting: "Hi, I'm",
       name: 'Akbarjon Ilhamov',
-      title: 'Frontend Developer & Creative Coder',
+      title: 'Fullstack Developer & Creative Coder',
       subtitle: 'I build beautiful, fast, and accessible web experiences. Passionate about clean code and pixel-perfect design.',
       cta: 'View My Work',
       cta2: 'Get in Touch',
+      cv: 'Download CV',
     },
     about: {
       title: 'About Me',
@@ -61,7 +62,7 @@ export const translations = {
     experience: {
       title: 'Experience & Education',
       subtitle: 'My journey so far',
-      item1Title: 'Frontend Developer',
+      item1Title: 'Fullstack Developer',
       item1Place: 'Freelance / Projects',
       item1Desc: 'Building web apps and landing pages.',
       item2Title: 'Computer Science',
@@ -86,10 +87,11 @@ export const translations = {
     hero: {
       greeting: "Salom, men",
       name: 'Akbarjon Ilhamov',
-      title: 'Frontend dasturchi va kreativ kodchi',
+      title: 'Fullstack dasturchi va kreativ kodchi',
       subtitle: 'Chiroyli, tez va qulay veb-ilovalar yarataman. Toza kod va mukammal dizaynni yaxshi ko\'raman.',
       cta: 'Loyihalarim',
       cta2: 'Bog\'lanish',
+      cv: 'CV yuklab olish',
     },
     about: {
       title: 'Men haqimda',
@@ -138,7 +140,7 @@ export const translations = {
     experience: {
       title: 'Tajriba va ta\'lim',
       subtitle: 'Mening yo\'lim',
-      item1Title: 'Frontend dasturchi',
+      item1Title: 'Fullstack dasturchi',
       item1Place: 'Freelance / Loyihalar',
       item1Desc: 'Veb-ilovalar va landing sahifalar yaratish.',
       item2Title: 'Kompyuter fanlari',
@@ -163,10 +165,11 @@ export const translations = {
     hero: {
       greeting: "Привет, я",
       name: 'Акбаржон Илхамов',
-      title: 'Frontend разработчик и креативный кодер',
+      title: 'Fullstack разработчик и креативный кодер',
       subtitle: 'Создаю красивые, быстрые и доступные веб-приложения. Увлекаюсь чистым кодом и идеальным дизайном.',
       cta: 'Мои работы',
       cta2: 'Связаться',
+      cv: 'Скачать CV',
     },
     about: {
       title: 'Обо мне',
@@ -215,7 +218,7 @@ export const translations = {
     experience: {
       title: 'Опыт и образование',
       subtitle: 'Мой путь',
-      item1Title: 'Frontend разработчик',
+      item1Title: 'Fullstack разработчик',
       item1Place: 'Фриланс / Проекты',
       item1Desc: 'Веб-приложения и лендинги.',
       item2Title: 'Информатика',

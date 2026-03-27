@@ -1,6 +1,9 @@
 -- Portfolio backend – Profile, Statistics, Skills, Projects, Contact
 -- PostgreSQL da bajarish (pgAdmin yoki Neon SQL Editor).
 
+-- UUID generatsiya uchun (gen_random_uuid)
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 -- 1. Contact – sayt formasidan kelgan xabarlar
 CREATE TABLE IF NOT EXISTS contact_messages (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

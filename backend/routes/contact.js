@@ -5,7 +5,7 @@ import { requireDb } from '../middleware/db.js'
 
 const router = Router()
 
-router.post('/', requireDb, async (req, res) => {
+router.post('/contact', requireDb, async (req, res) => {
   const name = typeof req.body?.name === 'string' ? req.body.name.trim() : ''
   const message = typeof req.body?.message === 'string' ? req.body.message.trim() : ''
   if (!name || !message) {
@@ -25,7 +25,7 @@ router.post('/', requireDb, async (req, res) => {
   }
 })
 
-router.get('/', requireAdmin, requireDb, async (req, res) => {
+router.get('/contact-messages', requireAdmin, requireDb, async (req, res) => {
   const sql = getDb()
   try {
     const rows = await sql`
@@ -39,7 +39,7 @@ router.get('/', requireAdmin, requireDb, async (req, res) => {
   }
 })
 
-router.delete('/', requireAdmin, requireDb, async (req, res) => {
+router.delete('/contact-messages', requireAdmin, requireDb, async (req, res) => {
   const id = req.query?.id
   if (!id || typeof id !== 'string') {
     return res.status(400).json({ success: false, ok: false, error: 'Id required' })

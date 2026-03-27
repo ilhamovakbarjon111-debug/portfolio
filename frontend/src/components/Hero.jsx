@@ -1,12 +1,18 @@
 import { motion } from 'framer-motion'
-import { Sparkles, ArrowRight, Code2, MessageCircle } from 'lucide-react'
+import { Sparkles, ArrowRight, Code2, MessageCircle, Download } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
 
+const CV_URL = import.meta.env.VITE_CV_URL || '/cv.html'
+
 export default function Hero() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const downloadCV = () => {
+    window.open(`/cv.html?lang=${lang}&download=true`, '_blank');
   }
 
   return (
@@ -95,6 +101,15 @@ export default function Hero() {
           >
             <MessageCircle className="w-4 h-4" strokeWidth={2} />
             {t.hero.cta2}
+          </motion.button>
+          <motion.button
+            onClick={downloadCV}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center gap-2 px-8 py-3.5 rounded-full border-2 border-pink-500 text-pink-500 font-semibold hover:bg-pink-500/10 transition-colors hover-shine"
+          >
+            <Download className="w-4 h-4" strokeWidth={2} />
+            {t.hero.cv}
           </motion.button>
         </motion.div>
       </div>
