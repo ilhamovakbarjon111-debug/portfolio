@@ -2,8 +2,6 @@ import { motion } from 'framer-motion'
 import { Sparkles, ArrowRight, Code2, MessageCircle, Download } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
 
-const CV_URL = import.meta.env.VITE_CV_URL || '/cv.html'
-
 export default function Hero() {
   const { t, lang } = useLanguage()
 
@@ -11,8 +9,9 @@ export default function Hero() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const downloadCV = () => {
-    window.open(`/cv.html?lang=${lang}&download=true`, '_blank');
+  // CV ni yangi tab'da ochish — foydalanuvchi o'zi PDF yuklab oladi
+  const openCV = () => {
+    window.open(`/cv.html?lang=${lang}`, '_blank', 'noopener,noreferrer')
   }
 
   return (
@@ -103,7 +102,7 @@ export default function Hero() {
             {t.hero.cta2}
           </motion.button>
           <motion.button
-            onClick={downloadCV}
+            onClick={openCV}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
             className="flex items-center gap-2 px-8 py-3.5 rounded-full border-2 border-pink-500 text-pink-500 font-semibold hover:bg-pink-500/10 transition-colors hover-shine"

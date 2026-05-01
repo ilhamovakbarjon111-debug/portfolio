@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CV</title>
+    <title>CV — Akbarjon Ilhamov</title>
     <style>
       :root {
         --bg: #0b1220;
@@ -15,43 +15,105 @@
         --border: rgba(255, 255, 255, 0.12);
       }
       * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
       body {
-        margin: 0;
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
-          "Segoe UI Emoji";
-        background: radial-gradient(1200px 600px at 20% -10%, rgba(99,102,241,0.35), transparent 60%),
+        font-family: 'Outfit', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        background:
+          radial-gradient(1200px 600px at 20% -10%, rgba(99,102,241,0.35), transparent 60%),
           radial-gradient(900px 500px at 110% 10%, rgba(236,72,153,0.28), transparent 55%),
           var(--bg);
         color: var(--text);
         line-height: 1.55;
+        min-height: 100vh;
       }
       a { color: inherit; }
       .wrap { max-width: 920px; margin: 0 auto; padding: 28px 18px 44px; }
+
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(11, 18, 32, 0.7);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 18px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .toolbar-left, .toolbar-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+      .lang-btn {
+        appearance: none;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.05);
+        color: var(--muted);
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 13px;
+        font-family: inherit;
+        transition: all 0.2s;
+      }
+      .lang-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+      .lang-btn.active {
+        background: linear-gradient(90deg, rgba(99,102,241,0.95), rgba(79,70,229,0.95));
+        color: #fff;
+        border-color: rgba(99,102,241,0.55);
+      }
+      .btn {
+        appearance: none;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 9px 16px;
+        background: rgba(255,255,255,0.06);
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 13px;
+        font-family: inherit;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+      }
+      .btn:hover { background: rgba(255,255,255,0.12); }
+      .btn.primary {
+        border-color: rgba(99,102,241,0.55);
+        background: linear-gradient(90deg, rgba(99,102,241,0.95), rgba(79,70,229,0.95));
+        color: #fff;
+      }
+      .btn.primary:hover { filter: brightness(1.1); }
+
       .top {
         display: flex;
         gap: 18px;
         align-items: flex-start;
         justify-content: space-between;
         flex-wrap: wrap;
-        padding: 22px 22px;
+        padding: 24px;
         border: 1px solid var(--border);
         background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
         border-radius: 18px;
       }
       .name {
-        font-size: 32px;
+        font-size: 34px;
         font-weight: 800;
         letter-spacing: -0.03em;
         margin: 0;
+        background: linear-gradient(135deg, #fff 0%, #c7d2fe 50%, #fbcfe8 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
-      .role {
-        margin: 6px 0 0;
-        color: var(--muted);
-        font-weight: 600;
-      }
+      .role { margin: 8px 0 0; color: var(--muted); font-weight: 600; font-size: 16px; }
       .pillrow { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
       .pill {
-        padding: 8px 10px;
+        padding: 7px 12px;
         border: 1px solid var(--border);
         border-radius: 999px;
         background: rgba(255,255,255,0.05);
@@ -59,344 +121,508 @@
         font-size: 12px;
         font-weight: 700;
       }
-      .actions { display: flex; gap: 10px; flex-wrap: wrap; }
-      .btn {
-        appearance: none;
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        padding: 10px 14px;
-        background: rgba(255,255,255,0.06);
-        color: var(--text);
-        text-decoration: none;
-        font-weight: 800;
-        font-size: 13px;
-      }
-      .btn.primary {
-        border-color: rgba(99,102,241,0.55);
-        background: linear-gradient(90deg, rgba(99,102,241,0.95), rgba(79,70,229,0.95));
-      }
-      .grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px; margin-top: 16px; }
+
+      .grid { display: grid; grid-template-columns: 1.3fr 0.9fr; gap: 16px; margin-top: 16px; }
       @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+
       .card {
         border: 1px solid var(--border);
         background: rgba(255,255,255,0.05);
         border-radius: 18px;
-        padding: 18px 18px;
+        padding: 20px;
       }
       h2 {
-        margin: 0 0 10px;
-        font-size: 15px;
-        letter-spacing: 0.02em;
+        margin: 0 0 12px;
+        font-size: 13px;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: rgba(255,255,255,0.86);
+        color: var(--accent);
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
+      h2::before {
+        content: '';
+        display: inline-block;
+        width: 18px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        border-radius: 2px;
+      }
+      h2:not(:first-child) { margin-top: 18px; }
       .muted { color: var(--muted); }
+      p { margin: 0 0 10px; }
       .list { margin: 0; padding-left: 18px; color: var(--muted); }
-      .item { margin: 10px 0; }
+      .list li { margin-bottom: 4px; }
+      .item { margin: 12px 0; }
+      .item:first-of-type { margin-top: 0; }
       .row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-      .title { font-weight: 800; color: var(--text); }
+      .title { font-weight: 800; color: var(--text); font-size: 15px; }
+      .place { color: var(--accent); font-size: 13px; font-weight: 600; }
+      .date { color: var(--muted); font-size: 12px; font-weight: 600; }
+      .desc { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
       .tag {
         display: inline-block;
-        padding: 6px 10px;
-        border-radius: 999px;
-        background: rgba(236,72,153,0.14);
-        border: 1px solid rgba(236,72,153,0.25);
-        color: rgba(255,255,255,0.9);
-        font-weight: 800;
+        padding: 5px 10px;
+        margin: 2px 4px 2px 0;
+        border-radius: 8px;
+        background: rgba(99,102,241,0.14);
+        border: 1px solid rgba(99,102,241,0.3);
+        color: rgba(255,255,255,0.92);
+        font-weight: 600;
         font-size: 12px;
       }
+      .skill-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+
+      .contact-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: var(--text);
+        padding: 6px 0;
+        font-size: 14px;
+        word-break: break-all;
+      }
+      .contact-link strong { font-weight: 700; }
+      .icon { flex-shrink: 0; width: 18px; height: 18px; color: var(--accent); }
+
+      .lang-block { display: none; }
+      .lang-block.active { display: block; }
+
       .foot {
-        margin-top: 14px;
-        color: rgba(255,255,255,0.6);
+        margin-top: 18px;
+        color: rgba(255,255,255,0.55);
         font-size: 12px;
         text-align: center;
       }
+
       @media print {
-        body { background: #ffffff; color: #111827; }
-        .top, .card { background: #ffffff; border-color: #e5e7eb; }
-        .pill { background: #f3f4f6; border-color: #e5e7eb; color: #374151; }
-        .btn { display: none; }
-        .muted, .list { color: #374151; }
-        .tag { background: #fce7f3; border-color: #fbcfe8; color: #111827; }
-        .foot { color: #6b7280; }
+        body { background: #ffffff !important; color: #111827 !important; }
+        .toolbar { display: none !important; }
+        .top, .card { background: #ffffff !important; border-color: #e5e7eb !important; box-shadow: none !important; }
+        .name {
+          background: none !important;
+          -webkit-text-fill-color: #111827 !important;
+          color: #111827 !important;
+        }
+        .pill { background: #f3f4f6 !important; border-color: #e5e7eb !important; color: #374151 !important; }
+        .role, .muted, .list, .desc, .date { color: #4b5563 !important; }
+        .tag { background: #eef2ff !important; border-color: #c7d2fe !important; color: #3730a3 !important; }
+        .place { color: #4f46e5 !important; }
+        .title { color: #111827 !important; }
+        h2 { color: #4f46e5 !important; }
+        h2::before { background: #4f46e5 !important; }
+        .icon { color: #4f46e5 !important; }
+        .foot { color: #6b7280 !important; }
+        .wrap { padding: 0; max-width: none; }
+        .grid { gap: 12px; }
+        .card { padding: 14px; page-break-inside: avoid; }
+        a { color: #4f46e5 !important; }
       }
     </style>
   </head>
   <body>
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <button onclick="setLang('uz')" class="lang-btn" id="lang-btn-uz">UZ</button>
+        <button onclick="setLang('en')" class="lang-btn" id="lang-btn-en">EN</button>
+        <button onclick="setLang('ru')" class="lang-btn" id="lang-btn-ru">RU</button>
+      </div>
+      <div class="toolbar-right">
+        <a href="/" class="btn">
+          <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+          <span data-i18n="back">Portfolio</span>
+        </a>
+        <button onclick="window.print()" class="btn primary">
+          <svg class="icon" style="color: #fff" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          <span data-i18n="download">PDF yuklab olish</span>
+        </button>
+      </div>
+    </div>
+
     <div class="wrap">
-      <section class="top">
-        <div>
-          <h1 class="name">Akbarjon Ilhamov</h1>
-          
-          <!-- O'zbekcha Header -->
-          <div id="header-uz" style="display: block;">
+
+      <!-- O'ZBEK -->
+      <div id="lang-uz" class="lang-block">
+        <section class="top">
+          <div>
+            <h1 class="name">Akbarjon Ilhamov</h1>
             <div class="role">Fullstack dasturchi va kreativ kodchi</div>
             <div class="pillrow">
-              <span class="pill">Namangan, O'zbekiston</span>
-              <span class="pill">Freelance uchun ochiq</span>
-              <span class="pill">Masofaviy / Joyida</span>
+              <span class="pill">📍 Namangan, O'zbekiston</span>
+              <span class="pill">✓ Freelance uchun ochiq</span>
+              <span class="pill">🌍 Masofaviy / Joyida</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid">
+          <div class="card">
+            <h2>Maqsad</h2>
+            <p class="muted">Zamonaviy va foydalanuvchi uchun qulay veb-saytlar hamda mobil ilovalar yaratishga qiziqadigan dasturchiman. Real loyihalar orqali tajriba orttirib, kuchli IT mutaxassis bo'lishni maqsad qilganman. Toza kod va mukammal dizaynni yaxshi ko'raman.</p>
+
+            <h2>Tajriba</h2>
+            <div class="item">
+              <div class="row">
+                <div class="title">Camera AI — mobil ilova</div>
+                <div class="date">2025 — hozirgacha</div>
+              </div>
+              <div class="place">React Native (Expo) + Node.js + PostgreSQL</div>
+              <div class="desc">Fotosurat va videografiya o'rganish platformasi, AI yordamida foto tahlili. Anthropic Claude API bilan integratsiya, Appwrite orqali rasmlarni saqlash.</div>
+            </div>
+            <div class="item">
+              <div class="row">
+                <div class="title">Fullstack dasturchi</div>
+                <div class="date">2024 — hozirgacha</div>
+              </div>
+              <div class="place">Freelance / Shaxsiy loyihalar</div>
+              <div class="desc">React, Node.js va PostgreSQL asosida zamonaviy veb-ilovalar va landing sahifalar yaratish. Admin panellar, kontakt formalari va REST API'lar.</div>
+            </div>
+            <div class="item">
+              <div class="row">
+                <div class="title">Mustaqil o'rganish</div>
+                <div class="date">2023 — hozirgacha</div>
+              </div>
+              <div class="place">Onlayn kurslar va dasturchilar jamoasi</div>
+              <div class="desc">React, JavaScript, TypeScript, Node.js, Express, dizayn tamoyillari va zamonaviy asboblar.</div>
+            </div>
+
+            <h2>Ta'lim</h2>
+            <div class="item">
+              <div class="row">
+                <div class="title">Algoritm o'quv markazi</div>
+                <div class="date">2023 — 2026</div>
+              </div>
+              <div class="place">Dasturlash asoslari va veb-dasturlash</div>
             </div>
           </div>
 
-          <!-- Inglizcha Header -->
-          <div id="header-en" style="display: none;">
-            <div class="role">Fullstack Developer and Creative Coder</div>
-            <div class="pillrow">
-              <span class="pill">Namangan, Uzbekistan</span>
-              <span class="pill">Open for freelance</span>
-              <span class="pill">Remote / On-site</span>
-            </div>
-          </div>
+          <aside class="card">
+            <h2>Bog'lanish</h2>
+            <a href="tel:+998501036244" class="contact-link">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+              <strong>+998 (50) 103-62-44</strong>
+            </a>
+            <a href="mailto:ilhamovakbarjon.111@gmail.com" class="contact-link">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              <strong>ilhamovakbarjon.111@gmail.com</strong>
+            </a>
+            <a href="https://t.me/ilhamov_akbarjon" target="_blank" rel="noopener" class="contact-link">
+              <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+              <strong>@ilhamov_akbarjon</strong>
+            </a>
+            <a href="https://instagram.com/akbarjon_ilhamov" target="_blank" rel="noopener" class="contact-link">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+              <strong>@akbarjon_ilhamov</strong>
+            </a>
 
-          <!-- Ruscha Header -->
-          <div id="header-ru" style="display: none;">
-            <div class="role">Fullstack Developer и Creative Coder</div>
-            <div class="pillrow">
-              <span class="pill">Наманган, Узбекистан</span>
-              <span class="pill">Открыт для фриланса</span>
-              <span class="pill">Удаленно / На месте</span>
+            <h2>Ko'nikmalar</h2>
+            <div class="skill-grid">
+              <span class="tag">React</span>
+              <span class="tag">React Native</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">HTML & CSS</span>
+              <span class="tag">Tailwind</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">Express</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">MongoDB</span>
+              <span class="tag">Git & GitHub</span>
+              <span class="tag">REST API</span>
+              <span class="tag">Figma</span>
+              <span class="tag">Vite</span>
             </div>
-          </div>
+
+            <h2>Tillar</h2>
+            <ul class="list">
+              <li>O'zbek — <strong>Ona tili</strong></li>
+              <li>Rus — O'rta daraja</li>
+              <li>Ingliz — O'rta daraja</li>
+            </ul>
+
+            <h2>Shaxsiy sifatlar</h2>
+            <ul class="list">
+              <li>Tez o'rganaman</li>
+              <li>Jamoa bilan ishlay olaman</li>
+              <li>Mas'uliyatli va kreativ</li>
+              <li>Muammolarni hal qilishga qiziqaman</li>
+            </ul>
+          </aside>
+        </section>
+
+        <div class="foot">
+          Maslahat: PDF yuklab olish uchun yuqoridagi tugmani bosing yoki Ctrl/Cmd + P bilan chop etib "PDF sifatida saqlash" ni tanlang.
         </div>
-      </section>
-
-      <div class="lang-selector" style="text-align: center; margin: 10px 0;">
-        <button onclick="setLang('uz')" class="btn">UZ</button>
-        <button onclick="setLang('en')" class="btn">EN</button>
-        <button onclick="setLang('ru')" class="btn">RU</button>
       </div>
 
-      <div id="content-uz" class="content">
-      <section class="grid">
-        <div class="card">
-          <h2>Shaxsiy ma'lumotlar</h2>
-          <ul class="list">
-            <li>Ism: <strong>Akbarjon Ilhamov</strong></li>
-            <li>Telefon: <strong>+998 (50) 103-62-44</strong></li>
-            <li>Email: <strong>ilhamovakbarjon.111@email.com</strong></li>
-            <li>Manzil: <strong>Namangan, O‘zbekiston</strong></li>
-          </ul>
+      <!-- ENGLISH -->
+      <div id="lang-en" class="lang-block">
+        <section class="top">
+          <div>
+            <h1 class="name">Akbarjon Ilhamov</h1>
+            <div class="role">Fullstack Developer & Creative Coder</div>
+            <div class="pillrow">
+              <span class="pill">📍 Namangan, Uzbekistan</span>
+              <span class="pill">✓ Open for freelance</span>
+              <span class="pill">🌍 Remote / On-site</span>
+            </div>
+          </div>
+        </section>
 
-          <h2 style="margin-top: 16px;">Maqsad</h2>
-          <p class="muted">Zamonaviy va foydalanuvchi uchun qulay web-saytlar hamda ilovalar yaratishga qiziqadigan dasturchiman. Real loyihalar orqali tajriba orttirib, kuchli IT mutaxassis bo‘lishni maqsad qilganman. Toza kod va mukammal dizaynni yaxshi ko‘raman.</p>
+        <section class="grid">
+          <div class="card">
+            <h2>Objective</h2>
+            <p class="muted">I am a fullstack developer who enjoys creating modern, user-friendly websites and mobile applications. My goal is to gain real-world experience and grow into a strong IT specialist. I value clean code and pixel-perfect design.</p>
 
-          <h2 style="margin-top: 16px;">Ko'nikmalar</h2>
-          <ul class="list">
-            <li>Frontend: HTML, CSS, JavaScript</li>
-            <li>Frameworklar: React.js</li>
-            <li>Backend: Node.js, Express.js</li>
-            <li>Dizayn: Figma</li>
-            <li>Versiya nazorati: Git, GitHub</li>
-            <li>Boshqa: Responsive design, API bilan ishlash</li>
-            <li>HTML, CSS, JavaScript, React.js</li>
-            <li>Node.js, Express.js, MongoDB</li>
-            <li>Figma, responsive dizayn</li>
-            <li>Git, GitHub, REST API</li>
-          </ul>
+            <h2>Experience</h2>
+            <div class="item">
+              <div class="row">
+                <div class="title">Camera AI — Mobile App</div>
+                <div class="date">2025 — Present</div>
+              </div>
+              <div class="place">React Native (Expo) + Node.js + PostgreSQL</div>
+              <div class="desc">Photography and videography learning platform with AI-powered photo analysis. Integrated with Anthropic Claude API and Appwrite for image storage.</div>
+            </div>
+            <div class="item">
+              <div class="row">
+                <div class="title">Fullstack Developer</div>
+                <div class="date">2024 — Present</div>
+              </div>
+              <div class="place">Freelance / Personal Projects</div>
+              <div class="desc">Building modern web apps and landing pages with React, Node.js and PostgreSQL. Admin panels, contact forms, and REST APIs.</div>
+            </div>
+            <div class="item">
+              <div class="row">
+                <div class="title">Self Learning</div>
+                <div class="date">2023 — Present</div>
+              </div>
+              <div class="place">Online courses & developer community</div>
+              <div class="desc">React, JavaScript, TypeScript, Node.js, Express, design principles and modern tooling.</div>
+            </div>
 
-          <h2 style="margin-top: 16px;">Ta'lim</h2>
-          <ul class="list">
-            <li>Algoritm o'quv markazi -- 2023-2026</li>
-          </ul>
+            <h2>Education</h2>
+            <div class="item">
+              <div class="row">
+                <div class="title">Algoritm Learning Center</div>
+                <div class="date">2023 — 2026</div>
+              </div>
+              <div class="place">Programming fundamentals & web development</div>
+            </div>
+          </div>
 
-          <h2 style="margin-top: 16px;">Til bilimi</h2>
-          <ul class="list">
-            <li>O‘zbek — Ona tili</li>
-            <li>Rus — O‘rta daraja</li>
-            <li>Ingliz — O‘rta daraja</li>
-          </ul>
+          <aside class="card">
+            <h2>Contact</h2>
+            <a href="tel:+998501036244" class="contact-link">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+              <strong>+998 (50) 103-62-44</strong>
+            </a>
+            <a href="mailto:ilhamovakbarjon.111@gmail.com" class="contact-link">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              <strong>ilhamovakbarjon.111@gmail.com</strong>
+            </a>
+            <a href="https://t.me/ilhamov_akbarjon" target="_blank" rel="noopener" class="contact-link">
+              <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+              <strong>@ilhamov_akbarjon</strong>
+            </a>
+            <a href="https://instagram.com/akbarjon_ilhamov" target="_blank" rel="noopener" class="contact-link">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+              <strong>@akbarjon_ilhamov</strong>
+            </a>
 
-          <h2 style="margin-top: 16px;">Shaxsiy xususiyatlar</h2>
-          <ul class="list">
-            <li>Tez o‘rganaman</li>
-            <li>Jamoa bilan ishlay olaman</li>
-            <li>Mas’uliyatli va kreativman</li>
-          </ul>
-        </aside>
-      </section>
+            <h2>Skills</h2>
+            <div class="skill-grid">
+              <span class="tag">React</span>
+              <span class="tag">React Native</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">HTML & CSS</span>
+              <span class="tag">Tailwind</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">Express</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">MongoDB</span>
+              <span class="tag">Git & GitHub</span>
+              <span class="tag">REST API</span>
+              <span class="tag">Figma</span>
+              <span class="tag">Vite</span>
+            </div>
 
-      <div class="foot">
-        Maslahat: Brauzer chop etish → "PDF sifatida saqlash" ni tanlang.
+            <h2>Languages</h2>
+            <ul class="list">
+              <li>Uzbek — <strong>Native</strong></li>
+              <li>Russian — Intermediate</li>
+              <li>English — Intermediate</li>
+            </ul>
+
+            <h2>Personal Qualities</h2>
+            <ul class="list">
+              <li>Quick learner</li>
+              <li>Team player</li>
+              <li>Responsible & creative</li>
+              <li>Passionate problem solver</li>
+            </ul>
+          </aside>
+        </section>
+
+        <div class="foot">
+          Tip: Click the button above to download as PDF, or use Ctrl/Cmd + P and choose "Save as PDF".
+        </div>
       </div>
-      </div>
 
-      <div id="content-en" class="content" style="display: none;">
-      <section class="grid">
-        <div class="card">
-          <h2>Personal Details</h2>
-          <ul class="list">
-            <li>Name: <strong>Akbarjon Ilhamov</strong></li>
-            <li>Phone: <strong>+998 (50) 103-62-44</strong></li>
-            <li>Email: <strong>ilhamovakbarjon.111@email.com</strong></li>
-            <li>Location: <strong>Namangan, Uzbekistan</strong></li>
-          </ul>
+      <!-- РУССКИЙ -->
+      <div id="lang-ru" class="lang-block">
+        <section class="top">
+          <div>
+            <h1 class="name">Акбаржон Илхамов</h1>
+            <div class="role">Fullstack разработчик и креативный кодер</div>
+            <div class="pillrow">
+              <span class="pill">📍 Наманган, Узбекистан</span>
+              <span class="pill">✓ Открыт для фриланса</span>
+              <span class="pill">🌍 Удалённо / На месте</span>
+            </div>
+          </div>
+        </section>
 
-          <h2 style="margin-top: 16px;">Objective</h2>
-          <p class="muted">I am a fullstack developer who enjoys creating modern and user-friendly websites and applications. I aim to build strong IT expertise through real projects. I value clean code and excellent design.</p>
+        <section class="grid">
+          <div class="card">
+            <h2>Цель</h2>
+            <p class="muted">Я fullstack разработчик, который любит создавать современные и удобные веб-сайты и мобильные приложения. Стремлюсь набираться опыта на реальных проектах и расти в сильного IT-специалиста. Ценю чистый код и идеальный дизайн.</p>
 
-          <h2 style="margin-top: 16px;">Skills</h2>
-          <ul class="list">
-            <li>Frontend: HTML, CSS, JavaScript</li>
-            <li>Frameworks: React.js</li>
-            <li>Backend: Node.js, Express.js</li>
-            <li>Design: Figma</li>
-            <li>Version Control: Git, GitHub</li>
-            <li>Other: Responsive design, API integration</li>
-            <li>HTML, CSS, JavaScript, React</li>
-            <li>Node.js, Express.js</li>
-            <li>MongoDB, PostgreSQL</li>
-            <li>Figma, responsive design</li>
-            <li>Git, GitHub, REST API</li>
-          </ul>
+            <h2>Опыт</h2>
+            <div class="item">
+              <div class="row">
+                <div class="title">Camera AI — мобильное приложение</div>
+                <div class="date">2025 — настоящее время</div>
+              </div>
+              <div class="place">React Native (Expo) + Node.js + PostgreSQL</div>
+              <div class="desc">Платформа для обучения фотографии и видеосъёмке с AI-анализом фото. Интеграция с Anthropic Claude API и Appwrite для хранения изображений.</div>
+            </div>
+            <div class="item">
+              <div class="row">
+                <div class="title">Fullstack разработчик</div>
+                <div class="date">2024 — настоящее время</div>
+              </div>
+              <div class="place">Фриланс / Личные проекты</div>
+              <div class="desc">Создание современных веб-приложений и лендингов на React, Node.js и PostgreSQL. Админ-панели, контактные формы, REST API.</div>
+            </div>
+            <div class="item">
+              <div class="row">
+                <div class="title">Самообучение</div>
+                <div class="date">2023 — настоящее время</div>
+              </div>
+              <div class="place">Онлайн-курсы и сообщество разработчиков</div>
+              <div class="desc">React, JavaScript, TypeScript, Node.js, Express, принципы дизайна и современные инструменты.</div>
+            </div>
 
-          <h2 style="margin-top: 16px;">Education</h2>
-          <ul class="list">
-            <li>Computer Science — University / Courses</li>
-          </ul>
-        </aside>
-      </section>
+            <h2>Образование</h2>
+            <div class="item">
+              <div class="row">
+                <div class="title">Учебный центр Algoritm</div>
+                <div class="date">2023 — 2026</div>
+              </div>
+              <div class="place">Основы программирования и веб-разработка</div>
+            </div>
+          </div>
 
-      <div class="foot">
-        Tip: Open browser print → "Save as PDF" to export.
-      </div>
-      </div>
+          <aside class="card">
+            <h2>Контакты</h2>
+            <a href="tel:+998501036244" class="contact-link">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+              <strong>+998 (50) 103-62-44</strong>
+            </a>
+            <a href="mailto:ilhamovakbarjon.111@gmail.com" class="contact-link">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              <strong>ilhamovakbarjon.111@gmail.com</strong>
+            </a>
+            <a href="https://t.me/ilhamov_akbarjon" target="_blank" rel="noopener" class="contact-link">
+              <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+              <strong>@ilhamov_akbarjon</strong>
+            </a>
+            <a href="https://instagram.com/akbarjon_ilhamov" target="_blank" rel="noopener" class="contact-link">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+              <strong>@akbarjon_ilhamov</strong>
+            </a>
 
-      <div id="content-ru" class="content" style="display: none;">
-      <section class="grid">
-        <div class="card">
-          <h2>Личные данные</h2>
-          <ul class="list">
-            <li>Имя: <strong>Akbarjon Ilhamov</strong></li>
-            <li>Телефон: <strong>+998 (50) 103-62-44</strong></li>
-            <li>Email: <strong>ilhamovakbarjon.111@email.com</strong></li>
-            <li>Адрес: <strong>Наманган, Узбекистан</strong></li>
-          </ul>
+            <h2>Навыки</h2>
+            <div class="skill-grid">
+              <span class="tag">React</span>
+              <span class="tag">React Native</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">HTML & CSS</span>
+              <span class="tag">Tailwind</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">Express</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">MongoDB</span>
+              <span class="tag">Git & GitHub</span>
+              <span class="tag">REST API</span>
+              <span class="tag">Figma</span>
+              <span class="tag">Vite</span>
+            </div>
 
-          <h2 style="margin-top: 16px;">Цель</h2>
-          <p class="muted">Я разработчик fullstack, создаю современные и удобные веб-сайты и приложения. Стремлюсь набрать сильную IT-компетенцию через реальные проекты. Люблю чистый код и отличный дизайн.</p>
+            <h2>Языки</h2>
+            <ul class="list">
+              <li>Узбекский — <strong>Родной</strong></li>
+              <li>Русский — Средний</li>
+              <li>Английский — Средний</li>
+            </ul>
 
-          <h2 style="margin-top: 16px;">Навыки</h2>
-          <ul class="list">
-            <li>Frontend: HTML, CSS, JavaScript</li>
-            <li>Фреймворки: React.js</li>
-            <li>Backend: Node.js, Express.js</li>
-            <li>Дизайн: Figma</li>
-            <li>Git, GitHub</li>
-            <li>Responsive design, работа с API</li>
-            <li>HTML, CSS, JavaScript, React</li>
-            <li>Node.js, Express.js, MongoDB</li>
-            <li>PostgreSQL, Figma</li>
-            <li>Git, GitHub, REST API</li>
-          </ul>
+            <h2>Личные качества</h2>
+            <ul class="list">
+              <li>Быстро обучаюсь</li>
+              <li>Работа в команде</li>
+              <li>Ответственный и креативный</li>
+              <li>Увлечён решением задач</li>
+            </ul>
+          </aside>
+        </section>
 
-          <h2 style="margin-top: 16px;">Образование</h2>
-          <ul class="list">
-            <li>Алгоритм (2023–2026)</li>
-          </ul>
-
-          <h2 style="margin-top: 16px;">Языки</h2>
-          <ul class="list">
-            <li>Узбекский — родной</li>
-            <li>Русский — средний</li>
-            <li>Английский — средний</li>
-          </ul>
-
-          <h2 style="margin-top: 16px;">Личные качества</h2>
-          <ul class="list">
-            <li>Быстро обучаюсь</li>
-            <li>Работа в команде</li>
-            <li>Ответственный и креативный</li>
-          </ul>
-        </aside>
-      </section>
-
-      <div class="foot">
-        Совет: Откройте печать браузера → "Сохранить как PDF" для экспорта.
-      </div>
+        <div class="foot">
+          Совет: Нажмите кнопку выше, чтобы скачать PDF, или используйте Ctrl/Cmd + P и выберите «Сохранить как PDF».
+        </div>
       </div>
 
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <script>
-      const contents = {
-        uz: document.getElementById('content-uz'),
-        en: document.getElementById('content-en'),
-        ru: document.getElementById('content-ru')
+      var i18n = {
+        uz: { back: 'Portfolio', download: 'PDF yuklab olish', title: 'CV — Akbarjon Ilhamov' },
+        en: { back: 'Portfolio', download: 'Download PDF', title: 'CV — Akbarjon Ilhamov' },
+        ru: { back: 'Портфолио', download: 'Скачать PDF', title: 'Резюме — Акбаржон Илхамов' }
       };
+
       function setLang(lang) {
-        // Content qismlarini yashirish
-        Object.values(contents).forEach(c => c.style.display = 'none');
-        contents[lang].style.display = 'block';
-        
-        // Header qismlarini ko'rsatish
-        document.getElementById('header-uz').style.display = lang === 'uz' ? 'block' : 'none';
-        document.getElementById('header-en').style.display = lang === 'en' ? 'block' : 'none';
-        document.getElementById('header-ru').style.display = lang === 'ru' ? 'block' : 'none';
-      }
-      function downloadPDF() {
-        // Clone qilib to'g'ri background bilan renderlash
-        const original = document.querySelector('.wrap');
-        if (!original) {
-          console.error('Could not find element to export');
-          return;
-        }
-
-        const clone = original.cloneNode(true);
-        
-        // Hozirgi tilga asosan boshqa tillarni yashirish
-        const allLangs = ['uz', 'en', 'ru'];
-        const hideContentLangs = allLangs.filter(l => l !== lang).map(l => `#content-${l}`).join(', ');
-        const hideHeaderLangs = allLangs.filter(l => l !== lang).map(l => `#header-${l}`).join(', ');
-        
-        const style = document.createElement('style');
-        style.innerHTML = `
-          body { background: #ffffff !important; color: #000000 !important; }
-          * { background: inherit !important; color: inherit !important; }
-          .wrap { background: #ffffff !important; }
-          .content { display: block !important; }
-          ${hideContentLangs} { display: none !important; }
-          ${hideHeaderLangs} { display: none !important; }
-          .grid { display: block !important; grid-template-columns: 1fr !important; }
-          .card { background: #f9f9f9 !important; border: 1px solid #e0e0e0 !important; margin-bottom: 15px !important; }
-          h1, h2 { color: #000000 !important; }
-          .list { color: #333333 !important; }
-          .muted { color: #666666 !important; }
-          strong { color: #000000 !important; }
-          .pill { background: #e0e0f0 !important; color: #333333 !important; border: 1px solid #c0c0e0 !important; }
-          .title { color: #000000 !important; }
-          aside { display: block !important; }
-        `;
-        clone.appendChild(style);
-
-        const langMap = { uz: 'Uzbek', en: 'English', ru: 'Russian' };
-        const fileName = `Akbarjon_Ilhamov_${langMap[lang]}_CV.pdf`;
-
-        const opt = {
-          margin:       0.25,
-          filename:     fileName,
-          image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  {
-            scale: 2,
-            useCORS: true,
-            logging: false,
-            backgroundColor: '#ffffff',
-            allowTaint: true,
-          },
-          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
-          pagebreak:    { mode: 'avoid-all' },
-        };
-
-        html2pdf().set(opt).from(clone).save().catch((err) => {
-          console.error('PDF Error:', err);
-          alert('PDF yaratishda xatoli. Brauzer chop etish funksiyasidan foydalaning.');
+        if (!i18n[lang]) lang = 'uz';
+        ['uz', 'en', 'ru'].forEach(function(l) {
+          var block = document.getElementById('lang-' + l);
+          var btn = document.getElementById('lang-btn-' + l);
+          if (block) block.classList.toggle('active', l === lang);
+          if (btn) btn.classList.toggle('active', l === lang);
         });
+        document.documentElement.lang = lang;
+        document.title = i18n[lang].title;
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+          var key = el.getAttribute('data-i18n');
+          if (i18n[lang][key]) el.textContent = i18n[lang][key];
+        });
+        try {
+          var url = new URL(window.location.href);
+          url.searchParams.set('lang', lang);
+          window.history.replaceState({}, '', url);
+        } catch (e) {}
       }
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const lang = urlParams.get('lang') || 'uz';
-      setLang(lang);
+      var urlParams = new URLSearchParams(window.location.search);
+      var initialLang = urlParams.get('lang') || 'uz';
+      setLang(initialLang);
+
       if (urlParams.get('download') === 'true') {
-        setTimeout(() => downloadPDF(), 500);
+        setTimeout(function() { window.print(); }, 500);
       }
     </script>
   </body>

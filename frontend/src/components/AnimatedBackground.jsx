@@ -1,9 +1,21 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect, useState } from 'react'
+
+// Mobil yoki kichik ekranni aniqlash
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+  return isMobile
+}
 
 // Floating particles — random positions and delays for organic feel
-function Particles() {
+function Particles({ count = 25 }) {
   const particles = useMemo(() => {
-    return Array.from({ length: 40 }, (_, i) => ({
+    return Array.from({ length: count }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -11,7 +23,7 @@ function Particles() {
       delay: Math.random() * 5,
       duration: 8 + Math.random() * 8,
     }))
-  }, [])
+  }, [count])
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -33,7 +45,6 @@ function Particles() {
   )
 }
 
-// Animated grid that slowly moves
 function Grid() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.4] dark:opacity-[0.15]">
@@ -62,7 +73,6 @@ function Grid() {
   )
 }
 
-// Large gradient orbs that morph and move
 function GradientOrbs() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -83,7 +93,6 @@ function GradientOrbs() {
   )
 }
 
-// Radial gradient vignette for depth
 function Vignette() {
   return (
     <div
@@ -97,17 +106,19 @@ function Vignette() {
 }
 
 export default function AnimatedBackground() {
+  const isMobile = useIsMobile()
   return (
     <div className="fixed inset-0 -z-10">
-      <Grid />
+      {/* Mobil'da grid va particles kamroq — tezroq ishlash uchun */}
+      {!isMobile && <Grid />}
       <GradientOrbs />
-      <Particles />
+      <Particles count={isMobile ? 12 : 25} />
       <Vignette />
     </div>
   )
 }
 
-// Section-specific background (lighter, for about/projects/contact)
+// Section-specific background — yengilroq
 export function SectionBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">

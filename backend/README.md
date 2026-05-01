@@ -1,53 +1,62 @@
-# Portfolio Backend
+# Backend — Portfolio API
 
-Express + PostgreSQL. Profile, Statistics, Skills, Projects va Contact uchun to‘liq API.
+Node.js (Express) + PostgreSQL backend. Lokal Postgres va Neon serverless ikkalasini qo'llab-quvvatlaydi.
 
-## Jadvallar
+## Endpointlar
 
-| Jadval | Ma’lumot |
-|--------|----------|
-| **profile** | Til bo‘yicha (en, uz, ru): name, title, subtitle, about_p1, about_p2, footer_by |
-| **statistics** | Bitta qator: projects, experience, clients, startups, use_auto_projects |
-| **skills** | Ko‘nikmalar ro‘yxati (name, sort_order) |
-| **projects** | Loyihalar: id, title, description, image, tags, live_url, code_url |
-| **contact_messages** | Kontakt formasidan kelgan xabarlar |
+| Metod | Yo'l | Vazifa | Auth |
+|-------|------|--------|------|
+| GET | `/api/health` | Health check | — |
+| POST | `/api/admin-login` | Admin parol bilan kirish | — |
+| GET | `/api/portfolio-data` | Portfolio ma'lumotlarini olish | — |
+| POST | `/api/portfolio-data` | Portfolio ma'lumotlarini yangilash | Admin |
+| POST | `/api/contact` | Kontakt formadan xabar yuborish | — |
+| GET | `/api/contact-messages` | Barcha xabarlarni olish | Admin |
+| DELETE | `/api/contact-messages?id=...` | Xabarni o'chirish | Admin |
 
-## Sozlash
-
-1. `cp .env.example .env`
-2. `.env` da **ADMIN_PASSWORD** va **DATABASE_URL** ni to‘ldiring.
-3. PostgreSQL da **schema.sql** ni ishga tushiring (barcha jadvallar yaratiladi).
-
-## Ishga tushirish
+## O'rnatish
 
 ```bash
+cd backend
+cp .env.example .env
+# .env ni tahrirlang (parol, DB URL)
 npm install
-npm run dev
+npm run db:schema   # Jadvallarni yaratish
+npm run dev         # http://localhost:3001
 ```
 
-Server: http://localhost:3001
+## Environment o'zgaruvchilar (`.env`)
 
-## API (frontend bilan mos)
+| O'zgaruvchi | Tavsif | Misol |
+|-------------|--------|-------|
+| `PORT` | Server porti | `3001` |
+| `ADMIN_PASSWORD` | Admin paroli | `mySecretPass!` |
+| `DATABASE_URL` | Postgres URL | `postgresql://postgres:pwd@localhost:5432/portfolio?sslmode=disable` |
+| `ALLOWED_ORIGINS` | CORS uchun ruxsat etilgan domenlar (vergul bilan) | `http://localhost:5173,https://example.com` |
 
-| Method | Path | Auth | Tavsif |
-|--------|------|------|--------|
-| POST | /api/admin-login | — | Parol → token |
-| GET | /api/portfolio-data | — | Profile, Statistics, Skills, Projects birlashgan |
-| POST | /api/portfolio-data | Bearer | Profile, Statistics, Skills, Projects saqlash |
-| POST | /api/contact | — | Kontakt forma (name, phone, telegram, message) |
-| GET | /api/contact-messages | Bearer | Xabarlar ro‘yxati |
-| DELETE | /api/contact-messages?id=uuid | Bearer | Xabarni o‘chirish |
+## Xavfsizlik xususiyatlari
 
-GET /api/portfolio-data quyidagi formatda qaytaradi (frontend o‘qiydi):
+- ✅ **Brute-force himoyasi** — admin login uchun 5 noto'g'ri urinishdan keyin 15 daqiqa lock
+- ✅ **Rate limiting** — har bir IP dan har 10 daqiqada max 5 ta kontakt xabari
+- ✅ **Constant-time parol taqqoslash** — timing attack'lardan himoya
+- ✅ **Input validation** — uzunlik chegaralari (ism 100, xabar 5000 belgi)
+- ✅ **CORS** — `ALLOWED_ORIGINS` orqali boshqarish
+- ✅ **HMAC token** — admin authentication
 
-```json
-{
-  "ok": true,
-  "data": {
-    "profile": { "en": {...}, "uz": {...}, "ru": {...} },
-    "stats": { "projects", "experience", "clients", "startups", "useAutoProjects" },
-    "skills": [{ "name": "..." }],
-    "projects": [{ "id", "title", "description", "image", "tags", "liveUrl", "codeUrl" }]
-  }
-}
+## Deploy
+
+### Railway / Render / Fly.io
+
+Environment'da quyidagilarni o'rnating:
+- `ADMIN_PASSWORD`
+- `DATABASE_URL`
+- `ALLOWED_ORIGINS=https://your-frontend.vercel.app`
+
+`PORT` avtomatik olinadi. `npm start` buyrug'i ishlatiladi.
+
+### Docker
+
+```bash
+docker build -t portfolio-backend .
+docker run -p 3001:3001 --env-file .env portfolio-backend
 ```

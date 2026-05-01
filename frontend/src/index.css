@@ -22,8 +22,16 @@
   --border: #2a2a3a;
 }
 
-* {
-  scroll-behavior: smooth;
+html { scroll-behavior: smooth; }
+
+/* Bo'limlarga scroll qilganda navbar ostida qolib ketmasligi uchun */
+section[id] { scroll-margin-top: 80px; }
+
+/* Kirish maydoni focus rangi accent bo'lsin */
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: none;
 }
 
 /* Custom scrollbar — chiroyli va zamonaviy */
@@ -54,7 +62,6 @@ html {
 
 ::-webkit-scrollbar-corner {
   background: var(--surface-elevated);
-  border-radius: 0 0 10px 0;
 }
 
 body {
@@ -62,6 +69,14 @@ body {
   background: var(--surface);
   color: var(--text);
   transition: background 0.4s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tanlash rangi */
+::selection {
+  background: var(--accent);
+  color: white;
 }
 
 .gradient-text {
@@ -156,4 +171,14 @@ body {
 }
 .nav-underline:hover::after {
   width: 100%;
+}
+
+/* Reduced motion — accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
